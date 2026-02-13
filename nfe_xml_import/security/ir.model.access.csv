@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_nfe_imported_log_user,nfe.imported.log.user,model_nfe_imported_log,base.group_user,1,0,0,0
+access_nfe_imported_log_manager,nfe.imported.log.manager,model_nfe_imported_log,stock.group_stock_manager,1,1,1,1
+access_nfe_xml_import_user,nfe.xml.import.user,model_nfe_xml_import,base.group_user,1,1,1,1
+access_nfe_xml_import_manager,nfe.xml.import.manager,model_nfe_xml_import,stock.group_stock_manager,1,1,1,1
+access_nfe_import_wizard_user,nfe.import.wizard.user,model_nfe_import_wizard,base.group_user,1,1,1,1
+access_nfe_import_wizard_manager,nfe.import.wizard.manager,model_nfe_import_wizard,stock.group_stock_manager,1,1,1,1
+access_nfe_certificate_config_manager,nfe.certificate.config.manager,model_nfe_certificate_config,base.group_system,1,1,1,1
+access_nfe_sefaz_query_wizard_user,nfe.sefaz.query.wizard.user,model_nfe_sefaz_query_wizard,base.group_user,1,1,1,1
