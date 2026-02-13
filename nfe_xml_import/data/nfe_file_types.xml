@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Suporte para arquivos XML de NFe -->
+        <record id="file_type_xml_nfe" model="ir.attachment">
+            <field name="name">NFe XML File Type</field>
+            <field name="description">Suporte para arquivos XML de Nota Fiscal Eletrônica</field>
+        </record>
+    </data>
+</odoo>

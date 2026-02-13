@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_nfe_imported_log_list" model="ir.ui.view">
+        <field name="name">nfe.imported.log.list</field>
+        <field name="model">nfe.imported.log</field>
+        <field name="arch" type="xml">
+            <list string="NFes Importadas" create="false" edit="false">
+                <field name="nfe_numero"/>
+                <field name="nfe_serie"/>
+                <field name="emitente_nome"/>
+                <field name="data_emissao"/>
+                <field name="valor_total" sum="Total"/>
+                <field name="data_importacao"/>
+                <field name="usuario_importacao"/>
+                <field name="xml_filename"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_nfe_imported_log_search" model="ir.ui.view">
+        <field name="name">nfe.imported.log.search</field>
+        <field name="model">nfe.imported.log</field>
+        <field name="arch" type="xml">
+            <search string="Buscar NFes">
+                <field name="nfe_numero"/>
+                <field name="nfe_chave"/>
+                <field name="emitente_nome"/>
+                <group expand="0" string="Agrupar Por">
+                    <filter string="Emitente" name="group_emitente" context="{'group_by': 'emitente_nome'}"/>
+                    <filter string="Mês de Importação" name="group_month" context="{'group_by': 'data_importacao:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_nfe_imported_log" model="ir.actions.act_window">
+        <field name="name">NFes Processadas</field>
+        <field name="res_model">nfe.imported.log</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_nfe_imported_log_search"/>
+    </record>
+
+    <record id="view_nfe_xml_import_list" model="ir.ui.view">
+        <field name="name">nfe.xml.import.list</field>
+        <field name="model">nfe.xml.import</field>
+        <field name="arch" type="xml">
+            <list string="Histórico de Importações" create="false">
+                <field name="xml_filename"/>
+                <field name="target_model_id"/>
+                <field name="assigned_to"/>
+                <field name="create_date"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_nfe_xml_import" model="ir.actions.act_window">
+        <field name="name">Histórico de Arquivos</field>
+        <field name="res_model">nfe.xml.import</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_nfe_import_wizard_form" model="ir.ui.view">
+        <field name="name">nfe.import.wizard.form</field>
+        <field name="model">nfe.import.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Importar XML NFe">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="xml_file"
+                                   widget="binary"
+                                   filename="xml_filename"
+                                   options="{'accepted_file_extensions': '.xml'}"
+                                   required="1"/>
+                            <field name="xml_filename" invisible="1"/>
+                            <field name="import_type" required="1"/>
+                        </group>
+                        <group>
+                            <field name="location_id"
+                                   options="{'no_create': True}"
+                                   invisible="import_type == 'products'"
+                                   required="import_type != 'products'"/>
+                            <field name="assigned_to"/>
+                        </group>
+                    </group>
+                    <div class="alert alert-info" role="alert" style="margin-top: 20px;">
+                        <strong>Informações de Processamento:</strong>
+                        <ul>
+                            <li>O sistema criará automaticamente produtos e fornecedores inexistentes.</li>
+                            <li>O estoque será atualizado na localização selecionada.</li>
+                            <li>Apenas arquivos <strong>.XML</strong> de Nota Fiscal Eletrônica são aceitos.</li>
+                        </ul>
+                    </div>
+                </sheet>
+                <footer>
+                    <button name="action_import_nfe" string="Processar e Atualizar Estoque" type="object" class="btn-primary"/>
+                    <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_nfe_import_wizard" model="ir.actions.act_window">
+        <field name="name">Importar XML NFe</field>
+        <field name="res_model">nfe.import.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_nfe_root"
+              name="Importação NFe"
+              parent="stock.menu_stock_root"
+              sequence="50"/>
+
+    <menuitem id="menu_nfe_import_wizard"
+              name="Importar Novo XML"
+              parent="menu_nfe_root"
+              action="action_nfe_import_wizard"
+              sequence="10"/>
+
+    <menuitem id="menu_nfe_logs"
+              name="NFes Processadas"
+              parent="menu_nfe_root"
+              action="action_nfe_imported_log"
+              sequence="20"/>
+
+    <menuitem id="menu_nfe_history"
+              name="Histórico de Arquivos"
+              parent="menu_nfe_root"
+              action="action_nfe_xml_import"
+              sequence="30"/>
+</odoo>

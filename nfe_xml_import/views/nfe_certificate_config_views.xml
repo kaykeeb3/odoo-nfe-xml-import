@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_nfe_certificate_config_form" model="ir.ui.view">
+        <field name="name">nfe.certificate.config.form</field>
+        <field name="model">nfe.certificate.config</field>
+        <field name="arch" type="xml">
+            <form string="Certificado Digital e Conexão SEFAZ">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="toggle_is_default" type="object"
+                                class="oe_stat_button" icon="fa-key"
+                                help="Marcar/Desmarcar como certificado padrão para consultas.">
+                            <field name="is_default" widget="boolean_button"
+                                   options='{"terminology": "default"}'/>
+                        </button>
+                    </div>
+
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="Ex: Certificado Maura, Conexão Filial SP"/></h1>
+                    </div>
+
+                    <group>
+                        <group string="Arquivo de Certificado (PFX)">
+                            <field name="pfx_file" widget="binary" filename="pfx_filename" required="1"/>
+                            <field name="pfx_filename" invisible="1"/>
+                            <field name="passphrase" password="true" required="1" help="A senha do seu arquivo .PFX"/>
+                        </group>
+                        <group string="Dados da Empresa">
+                            <field name="cnpj" required="1"/>
+                            <field name="cuf_autor" required="1"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_nfe_certificate_config_tree" model="ir.ui.view">
+        <field name="name">nfe.certificate.config.tree</field>
+        <field name="model">nfe.certificate.config</field>
+        <field name="arch" type="xml">
+            <list string="Configurações de Certificado SEFAZ">
+                <field name="is_default" widget="toggle_button" options='{"active": "Padrão", "inactive": "Secundário"}'/>
+                <field name="name"/>
+                <field name="cnpj"/>
+                <field name="cuf_autor"/>
+                <field name="pfx_filename"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_nfe_certificate_config" model="ir.actions.act_window">
+        <field name="name">Certificados SEFAZ</field>
+        <field name="res_model">nfe.certificate.config</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+</odoo>

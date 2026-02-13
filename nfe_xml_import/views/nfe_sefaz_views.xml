@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Form view do Wizard de Consulta SEFAZ -->
+    <record id="view_nfe_sefaz_query_wizard_form" model="ir.ui.view">
+        <field name="name">nfe.sefaz.query.wizard.form</field>
+        <field name="model">nfe.sefaz.query.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Consulta SEFAZ - NF-e">
+                <sheet>
+                    <!-- Parâmetros de Consulta -->
+                    <group>
+                        <group string="Certificado Digital">
+                            <field name="certificate_id"
+                                   options="{'no_create': True, 'no_open': True}"
+                                   placeholder="Ex: Certificado Matriz SP"/>
+                            <field name="cnpj" readonly="1"/>
+                        </group>
+                        <group string="Período de Consulta">
+                            <field name="date_from" widget="datetime" string="Data Inicial"/>
+                            <field name="date_to" widget="datetime" string="Data Final"/>
+                        </group>
+                        <group string="Consulta por Mês">
+                            <field name="month" widget="month" string="Mês"/>
+                        </group>
+                    </group>
+
+                    <!-- Aviso sobre limitação de consulta -->
+                    <div class="alert alert-warning mb-3" role="alert">
+                        <strong>Atenção:</strong> Consultas em lote só podem ser realizadas a cada 1 hora.
+                    </div>
+
+                    <!-- Botão de Consulta -->
+                    <div class="mb-3">
+                        <button name="action_search_sefaz"
+                                string="Consultar NF-e na SEFAZ"
+                                type="object"
+                                class="btn-primary"/>
+                    </div>
+
+                    <!-- Lista de NFes encontradas -->
+                  <field name="nfe_ids" nolabel="1">
+                    <list create="false" edit="false" delete="false" limit="10">
+                        <field name="nfe_numero" string="Número"/>
+                        <field name="nfe_serie" string="Série"/>
+                        <field name="emitente_nome" string="Emitente"/>
+                        <field name="valor_total" widget="monetary" string="Valor"/>
+                        <field name="data_emissao" widget="datetime" string="Data Emissão"/>
+                        <field name="xml_filename" string="Arquivo XML"/>
+                        <button name="action_download_xml"
+                                type="object"
+                                string="Baixar XML"
+                                class="oe_link primary"
+                                icon="fa-download"/>
+                    </list>
+                </field>
+
+
+                    <!-- Informações adicionais -->
+                    <div class="alert alert-info mt-3" role="alert">
+                        <p class="mb-0">
+                            <strong>Informações:</strong> As NF-e serão consultadas diretamente na SEFAZ no período informado. <br />
+                            Documentos já importados anteriormente serão ignorados.
+                        </p>
+                    </div>
+                </sheet>
+
+                <footer>
+                    <button string="Fechar" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action da Consulta SEFAZ -->
+    <record id="action_nfe_sefaz_query_wizard" model="ir.actions.act_window">
+        <field name="name">Consulta SEFAZ - NF-e</field>
+        <field name="res_model">nfe.sefaz.query.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">current</field>
+        <field name="view_id" ref="view_nfe_sefaz_query_wizard_form"/>
+    </record>
+
+    <!-- Menu da Consulta SEFAZ -->
+    <menuitem id="menu_nfe_sefaz_query"
+              name="Consulta SEFAZ"
+              parent="menu_nfe_main"
+              action="action_nfe_sefaz_query_wizard"
+              sequence="10"/>
+</odoo>
